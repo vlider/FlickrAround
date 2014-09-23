@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "FlickrService.h"
 
 @interface AppDelegate ()
 
@@ -42,4 +43,13 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    [[FlickrService sharedInstance] handleOpenURL:url sourceApplication:sourceApplication annotation:annotation];
+    
+    return YES;
+}
 @end

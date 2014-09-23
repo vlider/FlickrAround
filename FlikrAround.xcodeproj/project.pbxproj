@@ -14,6 +14,8 @@
 		90199FAC19D17A9900D338DA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90199FAB19D17A9900D338DA /* Images.xcassets */; };
 		90199FAF19D17A9900D338DA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90199FAD19D17A9900D338DA /* LaunchScreen.xib */; };
 		90199FBB19D17A9900D338DA /* FlikrAroundTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 90199FBA19D17A9900D338DA /* FlikrAroundTests.m */; };
+		90199FC619D17EFF00D338DA /* FlickrService.m in Sources */ = {isa = PBXBuildFile; fileRef = 90199FC519D17EFF00D338DA /* FlickrService.m */; };
+		FF952857BFBD452DAB5BE020 /* libPods-FlikrAround.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68A906F92C0F4BF0A2E98A4B /* libPods-FlikrAround.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		68A906F92C0F4BF0A2E98A4B /* libPods-FlikrAround.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FlikrAround.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90199F9B19D17A9900D338DA /* FlikrAround.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlikrAround.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90199F9F19D17A9900D338DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90199FA019D17A9900D338DA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -40,6 +43,9 @@
 		90199FB419D17A9900D338DA /* FlikrAroundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlikrAroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		90199FB919D17A9900D338DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90199FBA19D17A9900D338DA /* FlikrAroundTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlikrAroundTests.m; sourceTree = "<group>"; };
+		90199FC419D17EFF00D338DA /* FlickrService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrService.h; sourceTree = "<group>"; };
+		90199FC519D17EFF00D338DA /* FlickrService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrService.m; sourceTree = "<group>"; };
+		A3967A6C6F7E4D618B141502 /* Pods-FlikrAround.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlikrAround.xcconfig"; path = "Pods/Pods-FlikrAround.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF952857BFBD452DAB5BE020 /* libPods-FlikrAround.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +73,8 @@
 				90199F9D19D17A9900D338DA /* FlikrAround */,
 				90199FB719D17A9900D338DA /* FlikrAroundTests */,
 				90199F9C19D17A9900D338DA /* Products */,
+				A3967A6C6F7E4D618B141502 /* Pods-FlikrAround.xcconfig */,
+				D5F3A72F35E348B2A097A16D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,6 +98,8 @@
 				90199FAB19D17A9900D338DA /* Images.xcassets */,
 				90199FAD19D17A9900D338DA /* LaunchScreen.xib */,
 				90199F9E19D17A9900D338DA /* Supporting Files */,
+				90199FC419D17EFF00D338DA /* FlickrService.h */,
+				90199FC519D17EFF00D338DA /* FlickrService.m */,
 			);
 			path = FlikrAround;
 			sourceTree = "<group>";
@@ -119,6 +130,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D5F3A72F35E348B2A097A16D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				68A906F92C0F4BF0A2E98A4B /* libPods-FlikrAround.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -126,9 +145,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 90199FBE19D17A9900D338DA /* Build configuration list for PBXNativeTarget "FlikrAround" */;
 			buildPhases = (
+				C2A35FB73D864E88AED55569 /* Check Pods Manifest.lock */,
 				90199F9719D17A9900D338DA /* Sources */,
 				90199F9819D17A9900D338DA /* Frameworks */,
 				90199F9919D17A9900D338DA /* Resources */,
+				D181D84A93E44134873EC736 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -214,6 +235,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C2A35FB73D864E88AED55569 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D181D84A93E44134873EC736 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-FlikrAround-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		90199F9719D17A9900D338DA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -221,6 +275,7 @@
 			files = (
 				90199FA719D17A9900D338DA /* ViewController.m in Sources */,
 				90199FA419D17A9900D338DA /* AppDelegate.m in Sources */,
+				90199FC619D17EFF00D338DA /* FlickrService.m in Sources */,
 				90199FA119D17A9900D338DA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -341,6 +396,7 @@
 		};
 		90199FBF19D17A9900D338DA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A3967A6C6F7E4D618B141502 /* Pods-FlikrAround.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FlikrAround/Info.plist;
@@ -351,6 +407,7 @@
 		};
 		90199FC019D17A9900D338DA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A3967A6C6F7E4D618B141502 /* Pods-FlikrAround.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FlikrAround/Info.plist;
@@ -412,6 +469,7 @@
 				90199FC019D17A9900D338DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		90199FC119D17A9900D338DA /* Build configuration list for PBXNativeTarget "FlikrAroundTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +478,7 @@
 				90199FC319D17A9900D338DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
