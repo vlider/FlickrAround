@@ -22,6 +22,14 @@
 #define kFlickrCredentialsId    @"FlikrCredentialsIdentifier"
 #define kFlickrAroundURLScheme  @"flkrrnd"
 
+#define kRestMethodsPath            @"/services/rest"
+#define kMethodKey                  @"method"
+#define kFlickrProhosSearchMethod   @"flickr.photos.search"
+#define kFormatKey                  @"format"
+#define kJSON                       @"json"
+#define kLatitudeKey                @"lat"
+#define kLongitudeKey               @"lon"
+
 @interface FlickrService ()
 @property (nonatomic, strong) AFOAuth1Client *client;
 @end
@@ -59,6 +67,8 @@
     if (token && ![token isExpired]) {
         
         [self.client setAccessToken:token];
+        
+        [self searchPhotosForLocation:CLLocationCoordinate2DMake(0, 0)];
     } else {
         
         [self.client authorizeUsingOAuthWithRequestTokenPath:kFlickrReqTokenPath userAuthorizationPath:kFlickrAuthorizePath callbackURL:kFlickrCallbackUrl accessTokenPath:kFlickrAccesstockenPath accessMethod:kHTTPPost scope:nil success:^(AFOAuth1Token *accessToken, id responseObject) {
@@ -102,6 +112,22 @@
     }
     
     return NO;
+}
+
+- (void)searchPhotosForLocation:(CLLocationCoordinate2D)coordinate {
+    
+    NSDictionary *parameters = @{kMethodKey:kFlickrProhosSearchMethod,
+                                 kLatitudeKey:@(coordinate.latitude),
+                                 kLongitudeKey:@(coordinate.longitude),
+                                 kFormatKey:kJSON};
+    [self.client getPath:kRestMethodsPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"%@", operation.responseString);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"%@", operation.responseString);
+    }];
 }
 
 @end

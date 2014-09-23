@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface FlickrService : NSObject
 
@@ -19,6 +20,8 @@
     sourceApplication:(NSString *)sourceApplication
            annotation:(id)annotation;
 
+
+- (void)searchPhotosForLocation:(CLLocationCoordinate2D)coordinate;
 
 /** TASK
  
