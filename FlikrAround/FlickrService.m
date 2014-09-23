@@ -25,10 +25,15 @@
 #define kRestMethodsPath            @"/services/rest"
 #define kMethodKey                  @"method"
 #define kFlickrProhosSearchMethod   @"flickr.photos.search"
+#define kFlickrProhoInfoMethod      @"flickr.photos.getInfo"
 #define kFormatKey                  @"format"
 #define kJSON                       @"json"
 #define kLatitudeKey                @"lat"
 #define kLongitudeKey               @"lon"
+#define kPhotoID                    @"photo_id"
+#define kPhotoSecret                @"secret"
+
+
 
 @interface FlickrService ()
 @property (nonatomic, strong) AFOAuth1Client *client;
@@ -61,14 +66,17 @@
     return self;
 }
 
-- (void)login {
+- (void)loginWithComplitionBlock:(void (^)(NSError *, BOOL))complitionBlock
+{
  
     AFOAuth1Token *token = [AFOAuth1Token retrieveCredentialWithIdentifier:kFlickrCredentialsId];
     if (token && ![token isExpired]) {
         
         [self.client setAccessToken:token];
-        
-        [self searchPhotosForLocation:CLLocationCoordinate2DMake(0, 0)];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            complitionBlock(nil,YES);
+        });
+
     } else {
         
         [self.client authorizeUsingOAuthWithRequestTokenPath:kFlickrReqTokenPath userAuthorizationPath:kFlickrAuthorizePath callbackURL:kFlickrCallbackUrl accessTokenPath:kFlickrAccesstockenPath accessMethod:kHTTPPost scope:nil success:^(AFOAuth1Token *accessToken, id responseObject) {
@@ -80,23 +88,33 @@
             if (accessToken) {
                 
                 [AFOAuth1Token storeCredential:accessToken withIdentifier:kFlickrCredentialsId];
-                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    complitionBlock(nil,YES);
+                });
+
                 //Notify abour successs
             } else {
                 //Notify about failure
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    complitionBlock(nil,NO);
+                });
             }
         } failure:^(NSError *error) {
             
             //Notify about failure
+            dispatch_async(dispatch_get_main_queue(), ^{
+             complitionBlock(error,YES);
+            });
         }];
     }
 }
 
-- (void)logout {
+- (void)logoutComplitionBlock:(void (^)(NSError *, BOOL))complitionBlock {
     
     [AFOAuth1Token deleteCredentialWithIdentifier:kFlickrCredentialsId];
-    
-    //Notify about success
+    dispatch_async(dispatch_get_main_queue(), ^{
+        complitionBlock(nil,YES);
+    });
 }
 
 - (BOOL)handleOpenURL:(NSURL *)url
@@ -113,8 +131,48 @@
     
     return NO;
 }
+- (void)getPhotoInformations:(NSString *)photoID secret:(NSString *)photoSecret complitionBlock:(void (^)(NSError * ,id response, BOOL))complitionBlock
+{
+    
+    //3887 _ 14904639627_288768fcf6
+    
+    photoID = @"14904639627";
+    photoSecret = @"288768fcf6";
+    
+    NSDictionary *parameters = @{kMethodKey:kFlickrProhoInfoMethod,
+                                 kPhotoID:photoID,
+                                 kPhotoSecret:photoSecret,
+                                 kFormatKey:kJSON};
+    
+    [self.client getPath:kRestMethodsPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSDictionary *object = nil;
+        NSError *error = [self deserializeResponse:operation.responseString intoObject:&object];
+        
+        if(error)
+        {
+            complitionBlock(error,nil,NO);
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                complitionBlock(nil,object,NO);
+            });
+            
+            NSLog(@"%@", operation.responseString);
+        }
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            complitionBlock(error,nil,NO);
+        });
+        NSLog(@"%@", operation.responseString);
+    }];
+    
+}
 
-- (void)searchPhotosForLocation:(CLLocationCoordinate2D)coordinate {
+- (void)searchPhotosForLocation:(CLLocationCoordinate2D)coordinate complitionBlock:(void (^)(NSError *,id response, BOOL))complitionBlock{
     
     NSDictionary *parameters = @{kMethodKey:kFlickrProhosSearchMethod,
                                  kLatitudeKey:@(coordinate.latitude),
@@ -122,12 +180,61 @@
                                  kFormatKey:kJSON};
     [self.client getPath:kRestMethodsPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSLog(@"%@", operation.responseString);
+        NSDictionary *object = nil;
+        NSError *error = [self deserializeResponse:operation.responseString intoObject:&object];
+        
+        if(error)
+        {
+            complitionBlock(error,nil,NO);
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                complitionBlock(nil,object,NO);
+            });
+            
+            NSLog(@"%@", operation.responseString);
+        }
+        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            complitionBlock(error,nil,NO);
+        });
         NSLog(@"%@", operation.responseString);
     }];
+}
+
+#pragma mark -
+#pragma mark Deserialize methods
+#pragma mark -
+
+- (NSError *)deserializeResponse:(NSString *)str intoObject:(NSDictionary **)object
+{
+    NSError *error = nil;
+    
+    str = [str stringByReplacingOccurrencesOfString:@"jsonFlickrApi(" withString:@""];
+    str = [str stringByReplacingOccurrencesOfString:@")" withString:@""];
+
+    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[str dataUsingEncoding:NSUTF8StringEncoding]
+                                                          options:0 error:&error];
+//    *object = [ NSJSONSerialization JSONObjectWithData: options:NSJSONReadingMutableLeaves error:&error ];
+    
+//    if( error )
+//    {
+//        NSString *s = [ [ NSString alloc ]initWithData:blob encoding:NSUTF8StringEncoding ];
+//        NSLog(@"%@", s);
+//    }
+    
+    *object = jsonObject;
+    
+//    NSNumber *code = obj[ @"error" ];
+//    if( code )
+//    {
+//        error = [ NSError errorWithDomain:@"FSCore" code:code.intValue userInfo:nil ];
+//    }
+    
+    return error;
 }
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B16085719D1D24D0098867F /* BasicCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16085619D1D24D0098867F /* BasicCollectionViewCell.m */; };
+		8B16085A19D1D6790098867F /* PhotoInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16085919D1D6790098867F /* PhotoInfoViewController.m */; };
 		90199FA119D17A9900D338DA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90199FA019D17A9900D338DA /* main.m */; };
 		90199FA419D17A9900D338DA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 90199FA319D17A9900D338DA /* AppDelegate.m */; };
 		90199FA719D17A9900D338DA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90199FA619D17A9900D338DA /* ViewController.m */; };
@@ -30,6 +32,10 @@
 
 /* Begin PBXFileReference section */
 		68A906F92C0F4BF0A2E98A4B /* libPods-FlikrAround.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FlikrAround.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B16085519D1D24D0098867F /* BasicCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicCollectionViewCell.h; sourceTree = "<group>"; };
+		8B16085619D1D24D0098867F /* BasicCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicCollectionViewCell.m; sourceTree = "<group>"; };
+		8B16085819D1D6790098867F /* PhotoInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoInfoViewController.h; sourceTree = "<group>"; };
+		8B16085919D1D6790098867F /* PhotoInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoInfoViewController.m; sourceTree = "<group>"; };
 		90199F9B19D17A9900D338DA /* FlikrAround.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlikrAround.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90199F9F19D17A9900D338DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90199FA019D17A9900D338DA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -67,6 +73,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B16085419D1D21A0098867F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8B16085519D1D24D0098867F /* BasicCollectionViewCell.h */,
+				8B16085619D1D24D0098867F /* BasicCollectionViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		90199F9219D17A9800D338DA = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +105,7 @@
 		90199F9D19D17A9900D338DA /* FlikrAround */ = {
 			isa = PBXGroup;
 			children = (
+				8B16085419D1D21A0098867F /* Cells */,
 				90199FA219D17A9900D338DA /* AppDelegate.h */,
 				90199FA319D17A9900D338DA /* AppDelegate.m */,
 				90199FA519D17A9900D338DA /* ViewController.h */,
@@ -100,6 +116,8 @@
 				90199F9E19D17A9900D338DA /* Supporting Files */,
 				90199FC419D17EFF00D338DA /* FlickrService.h */,
 				90199FC519D17EFF00D338DA /* FlickrService.m */,
+				8B16085819D1D6790098867F /* PhotoInfoViewController.h */,
+				8B16085919D1D6790098867F /* PhotoInfoViewController.m */,
 			);
 			path = FlikrAround;
 			sourceTree = "<group>";
@@ -273,10 +291,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B16085719D1D24D0098867F /* BasicCollectionViewCell.m in Sources */,
 				90199FA719D17A9900D338DA /* ViewController.m in Sources */,
 				90199FA419D17A9900D338DA /* AppDelegate.m in Sources */,
 				90199FC619D17EFF00D338DA /* FlickrService.m in Sources */,
 				90199FA119D17A9900D338DA /* main.m in Sources */,
+				8B16085A19D1D6790098867F /* PhotoInfoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,8 +420,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FlikrAround/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -411,8 +433,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FlikrAround/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -13,15 +13,15 @@
 
 + (instancetype)sharedInstance;
 
-- (void)login;
-- (void)logout;
+- (void)loginWithComplitionBlock:(void (^)(NSError*,BOOL isSucces))complitionBlock;
+- (void)logoutComplitionBlock:(void (^)(NSError*,BOOL isSucces))complitionBlock;;
 
 - (BOOL)handleOpenURL:(NSURL *)url
     sourceApplication:(NSString *)sourceApplication
            annotation:(id)annotation;
 
-
-- (void)searchPhotosForLocation:(CLLocationCoordinate2D)coordinate;
+- (void)getPhotoInformations:(NSString *)photoID secret:(NSString *)photoSecret complitionBlock:(void (^)(NSError * ,id response, BOOL))complitionBlock;
+- (void)searchPhotosForLocation:(CLLocationCoordinate2D)coordinate complitionBlock:(void (^)(NSError * ,id response, BOOL))complitionBlock;
 
 /** TASK
  
