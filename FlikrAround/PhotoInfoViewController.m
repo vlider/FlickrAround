@@ -7,17 +7,46 @@
 //
 
 #import "PhotoInfoViewController.h"
+#import "FlickrService.h"
 
 @interface PhotoInfoViewController ()<UIScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *placeLabel;
+
+@property (nonatomic, strong) NSDictionary *infoDict;
+
 @end
 
 @implementation PhotoInfoViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    
+    NSString *photoID       = self.photoInfo[@"id"];
+    NSString *photoSecret   = self.photoInfo[@"secret"];
+    NSString *title         = self.photoInfo[@"title"];
+    
+    self.title = title;
+    
+    [[FlickrService sharedInstance] getPhotoInformations:photoID secret:photoSecret complitionBlock:^(NSError *error, NSDictionary *response, BOOL isSucces)
+     {
+         
+         NSDictionary *photo = response[@"photo"];
+         NSString *name = photo[@"owner"][@"realname"];
+         NSString *descrip = photo[@"description"][@"_content"];
+//         NSNumber *dateuploaded = photo[@"dateuploaded"];
+         
+         
+         
+         self.nameLabel.text = [NSString stringWithFormat:@"Location: %@",descrip];
+         self.placeLabel.text = [NSString stringWithFormat:@"Owner: %@",name];
+
+     }];
     
     self.imageView = [[UIImageView alloc] initWithImage:self.image];
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -36,7 +65,6 @@
 {
     return self.imageView;
 }
-
 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
@@ -74,7 +102,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-
 }
 
 @end

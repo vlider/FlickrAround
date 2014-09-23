@@ -134,7 +134,16 @@ CG_INLINE BOOL is_ios_8()
     
     PhotoInfoViewController *phVC = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([PhotoInfoViewController class])];
     phVC.image = image;
-    phVC.photoInfo = nil;
+    
+    NSDictionary *photo = [self.photos objectAtIndex:indexPath.row];
+    
+    NSString *photoID       = photo[@"id"];
+    NSString *photoSecret   = photo[@"secret"];
+    NSString *title         = photo[@"title"];
+    
+    NSDictionary *photoInfo = @{@"id":photoID,@"secret":photoSecret,@"title":title};
+    
+    phVC.photoInfo = photoInfo;
     [self.navigationController pushViewController:phVC animated:YES];
                                      
 }
@@ -190,10 +199,6 @@ CG_INLINE BOOL is_ios_8()
               {
                   NSArray* photos = response[@"photos"][@"photo"];
                   self.photos = photos;
-                  [[FlickrService sharedInstance] getPhotoInformations:nil secret:nil complitionBlock:^(NSError *error, id response, BOOL isSucces)
-                  {
-                     
-                  }];
                   [self.collectionView reloadData];
              }];
              
