@@ -66,55 +66,75 @@
     return self;
 }
 
-- (void)loginWithComplitionBlock:(void (^)(NSError *, BOOL))complitionBlock
+- (void)loginWithCompletionBlock:(void (^)(NSError *, BOOL))complitionBlock
 {
  
     AFOAuth1Token *token = [AFOAuth1Token retrieveCredentialWithIdentifier:kFlickrCredentialsId];
     if (token && ![token isExpired]) {
         
         [self.client setAccessToken:token];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            complitionBlock(nil,YES);
-        });
+        
+        if (complitionBlock) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                complitionBlock(nil,YES);
+            });
+        }
 
     } else {
         
         [self.client authorizeUsingOAuthWithRequestTokenPath:kFlickrReqTokenPath userAuthorizationPath:kFlickrAuthorizePath callbackURL:kFlickrCallbackUrl accessTokenPath:kFlickrAccesstockenPath accessMethod:kHTTPPost scope:nil success:^(AFOAuth1Token *accessToken, id responseObject) {
             
-//            NSString *responseString = nil;
-//            if ([responseObject isKindOfClass:[NSData class]])
-//                responseString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-            
             if (accessToken) {
                 
                 [AFOAuth1Token storeCredential:accessToken withIdentifier:kFlickrCredentialsId];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    complitionBlock(nil,YES);
-                });
-
+                
                 //Notify abour successs
+                if (complitionBlock) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        complitionBlock(nil, YES);
+                    });
+                }
             } else {
+                
                 //Notify about failure
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    complitionBlock(nil,NO);
-                });
+                if (complitionBlock) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        complitionBlock(nil, NO);
+                    });
+                }
             }
         } failure:^(NSError *error) {
             
             //Notify about failure
-            dispatch_async(dispatch_get_main_queue(), ^{
-             complitionBlock(error,YES);
-            });
+            if (complitionBlock) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    complitionBlock(error, NO);
+                });
+            }
         }];
     }
 }
 
-- (void)logoutComplitionBlock:(void (^)(NSError *, BOOL))complitionBlock {
+- (void)logoutCompletionBlock:(void (^)(NSError *, BOOL))complitionBlock {
     
     [AFOAuth1Token deleteCredentialWithIdentifier:kFlickrCredentialsId];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        complitionBlock(nil,YES);
-    });
+    
+    if (complitionBlock) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            complitionBlock(nil, YES);
+        });
+    }
+    
 }
 
 - (BOOL)handleOpenURL:(NSURL *)url
@@ -133,12 +153,6 @@
 }
 - (void)getPhotoInformations:(NSString *)photoID secret:(NSString *)photoSecret complitionBlock:(void (^)(NSError * ,id response, BOOL))complitionBlock
 {
-    
-    //3887 _ 14904639627_288768fcf6
-    
-    photoID = @"14904639627";
-    photoSecret = @"288768fcf6";
-    
     NSDictionary *parameters = @{kMethodKey:kFlickrProhoInfoMethod,
                                  kPhotoID:photoID,
                                  kPhotoSecret:photoSecret,
@@ -149,25 +163,36 @@
         NSDictionary *object = nil;
         NSError *error = [self deserializeResponse:operation.responseString intoObject:&object];
         
-        if(error)
-        {
-            complitionBlock(error,nil,NO);
-        }
-        else
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                complitionBlock(nil,object,NO);
-            });
+        if (error) {
+           
+            if (complitionBlock) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    complitionBlock(error, nil, NO);
+                });
+            }
             
-            NSLog(@"%@", operation.responseString);
+        } else {
+            
+            if (complitionBlock) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    complitionBlock(nil, object, YES);
+                });
+            }
         }
-        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            complitionBlock(error,nil,NO);
-        });
-        NSLog(@"%@", operation.responseString);
+        
+        if (complitionBlock) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                complitionBlock(error, nil, NO);
+            });
+        }
     }];
     
 }
@@ -183,25 +208,36 @@
         NSDictionary *object = nil;
         NSError *error = [self deserializeResponse:operation.responseString intoObject:&object];
         
-        if(error)
-        {
-            complitionBlock(error,nil,NO);
-        }
-        else
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                complitionBlock(nil,object,NO);
-            });
+        if (error) {
             
-            NSLog(@"%@", operation.responseString);
+            if (complitionBlock) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    complitionBlock(error, nil, NO);
+                });
+            }
+            
+        } else {
+            
+            if (complitionBlock) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    complitionBlock(nil, object, YES);
+                });
+            }
         }
-        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            complitionBlock(error,nil,NO);
-        });
-        NSLog(@"%@", operation.responseString);
+        
+        if (complitionBlock) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                complitionBlock(error,nil,NO);
+            });
+        }
     }];
 }
 
@@ -214,25 +250,12 @@
     NSError *error = nil;
     
     str = [str stringByReplacingOccurrencesOfString:@"jsonFlickrApi(" withString:@""];
-    str = [str stringByReplacingOccurrencesOfString:@")" withString:@""];
+    str = [str stringByReplacingOccurrencesOfString:@")" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange([str length] - 2, 2)];
 
     NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[str dataUsingEncoding:NSUTF8StringEncoding]
                                                           options:0 error:&error];
-//    *object = [ NSJSONSerialization JSONObjectWithData: options:NSJSONReadingMutableLeaves error:&error ];
-    
-//    if( error )
-//    {
-//        NSString *s = [ [ NSString alloc ]initWithData:blob encoding:NSUTF8StringEncoding ];
-//        NSLog(@"%@", s);
-//    }
     
     *object = jsonObject;
-    
-//    NSNumber *code = obj[ @"error" ];
-//    if( code )
-//    {
-//        error = [ NSError errorWithDomain:@"FSCore" code:code.intValue userInfo:nil ];
-//    }
     
     return error;
 }

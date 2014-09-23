@@ -13,8 +13,8 @@
 
 + (instancetype)sharedInstance;
 
-- (void)loginWithComplitionBlock:(void (^)(NSError*,BOOL isSucces))complitionBlock;
-- (void)logoutComplitionBlock:(void (^)(NSError*,BOOL isSucces))complitionBlock;;
+- (void)loginWithCompletionBlock:(void (^)(NSError*,BOOL isSucces))complitionBlock;
+- (void)logoutCompletionBlock:(void (^)(NSError*,BOOL isSucces))complitionBlock;;
 
 - (BOOL)handleOpenURL:(NSURL *)url
     sourceApplication:(NSString *)sourceApplication
